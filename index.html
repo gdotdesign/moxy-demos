@@ -1,0 +1,27 @@
+<html><head><!-- Set viewport to fixed scale 1 and 320 for iphone 748 for ipad--><meta name="viewport" content="user-scalable=no, width=320, minimum-scale=1, maximum-scale=1.0"/><!-- "Add to home screen" support--><meta name="apple-mobile-web-app-capable" content="yes"/><!-- Style--><link rel="stylesheet" href="style.css"/><!-- Vendor scripts--><script src="js/vendor.js"></script><!-- App script--><script src="js/app.js"></script></head><body><!-- Wrapper for the navigation--><!-- Every Page is div with an id--><div id="wrap"><!-- Achievement box--><div id="achibox" data-template="data-template" class="no-page"><div class="achieve"><div class="img {{icon}}"></div><div class="points">{{points}}</div>{{name}}
+</div></div><div id="index"><h2>Moxy - Demos
+</h2><div data-page="acceleration" class="button">Acceleration</div><div data-page="compass" class="button">Compass</div><div data-page="battery" class="button">Battery</div><div data-page="connection" class="button">Connection</div><div data-page="notification" class="button">notification</div><div data-page="geo" class="button">Geolocation</div></div><div id="acceleration"><div data-page="index" class="back">back</div><p>Use the Moxy UI to manipulate the acceleration and see the red dot move!</p></div><div id="compass"><div data-page="index" class="back">back</div><p>Use the Moxy UI to manipulate the heading and see the compass rotate!</p><embed id="comp" src="images/compass.svg" width="50" height="50" filltype="image/svg+xml" />
+<pre>navigator.compass.watchHeading (heading) -&gt;
+  $(&quot;comp&quot;).setStyles
+    '-webkit-transform': &quot;rotate(&quot;+(-45+heading)+&quot;deg)&quot;
+,(-&gt;), {frequency:10}
+</pre></div><div id="connection"><div data-page="index" class="back">back</div><p>Change the connection in the UI to see changes.
+</p><p>When the connection changes to none the offline event is fired and vica versa.
+</p><p>When going online you will hear a beep.
+</p><p>When going offline the device will vibrate.
+</p></div><div id="battery"><div data-page="index" class="back">back</div><div id="bat">0%
+</div><div id="charge">Not Charging
+</div><p>This page shows the current state of the battery.
+</p><p>When the battery goes ciritcal, notifications are fired. (vibrate, beeps, alert)
+</p><pre>updateBattery= (event) -&gt;
+  $(&quot;bat&quot;).set 'text', event.level+&quot;%&quot;
+  $(&quot;charge&quot;).set 'text', if event.isPlugged then 'Charging' else 'Not Charging'
+window.addEventListener 'batterycritical', (event) -&gt;
+  updateBattery(event)
+  unless event.isPlugged
+    navigator.notification.vibrate 1000
+    navigator.notification.beep 3
+    navigator.notification.alert 'Battery Critical'
+window.addEventListener 'batterylow', updateBattery
+window.addEventListener 'batterystatus', updateBattery
+</pre></div></div></body></html>
